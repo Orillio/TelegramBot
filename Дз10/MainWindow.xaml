@@ -152,7 +152,7 @@
 
             <Button x:Name="DownloadMessages" Foreground="white" Opacity="0.3" Grid.Column="0"
                 Height="35" Margin="0,5,0,0" VerticalAlignment="top"
-                Content="Загрузить сообщения" Cursor="Hand" Click="DownloadMessages_Click">
+                Content="Загрузить файл" Cursor="Hand" Click="DownloadMessages_Click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>
@@ -178,7 +178,7 @@
                 </Button.Template>
             </Button>
 
-            <Grid x:Name="DownloadTab" Grid.Column="0" Margin="5,100,5,0" Visibility="Collapsed" Height="209" VerticalAlignment="Top">
+            <Grid x:Name="DownloadTab" Visibility="Collapsed" Grid.Column="0" Margin="5,100,5,0" Height="209" VerticalAlignment="Top">
                 <Border BorderThickness="1" BorderBrush="Aqua" Opacity="0.3" CornerRadius="10" Height="209" VerticalAlignment="Top">
                     <StackPanel Height="207" VerticalAlignment="Top">
                         <TextBlock Height="66" Margin="0,10,0,0" VerticalAlignment="top" 

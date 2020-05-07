@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Threading;
+using Telegram.Bot.Types.InputFiles;
+using System.Runtime.Remoting;
+using System.IO;
 
 namespace Дз10
 {
@@ -62,7 +64,11 @@ namespace Дз10
         {
             if (MessageCollectionList.SelectedIndex != -1) // Если сообщение выбрано
             {
-                if (Client.Clients[UserNames.SelectedIndex].Messages[MessageCollectionList.SelectedIndex].Downloadable)// проверка на скачиваемость
+                if (Client.Clients[UserNames.SelectedIndex].Messages[MessageCollectionList.SelectedIndex].FileId == "0")
+                {
+                    MessageBox.Show("Вы не можете скачать файл, который вы отправили");
+                }
+                else if (Client.Clients[UserNames.SelectedIndex].Messages[MessageCollectionList.SelectedIndex].Downloadable)// проверка на скачиваемость
                 {
                     try
                     {
@@ -146,15 +152,69 @@ namespace Дз10
                 MessageBox.Show("Поле ввода пусто","Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void DownloadTabButton_Click(object sender, RoutedEventArgs e)
+        private async void DownloadTabButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrEmpty(DownloadTextField.Text))
             {
-                if (Client.FileExists($"{DownloadTextField.Text}.json"))
+                if (Client.FileExists(DownloadTextField.Text))
                 {
-                    Client.JsonDownload(DownloadTextField.Text);
-                    UserNames.ItemsSource = Client.Clients;
-                    MessageBox.Show("Файл скачан!", "Файл скачан", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Client.ExtensionCheck(DownloadTextField.Text, out string extension, out string extensionType);
+                    var file = new FileStream($@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\{DownloadTextField.Text}",
+                        FileMode.Open);
+                    switch (extensionType)
+                    {
+                        case "photo":
+                            if (UserNames.SelectedIndex != -1)
+                            {
+                                await Client.bot.SendPhotoAsync(IdBox.Text, new InputOnlineFile(file));
+                                Client.MessageAdd("0", int.Parse(IdBox.Text), $"Вы отправили фото в формате .{extension}", false,
+                                    null, Telegram.Bot.Types.Enums.MessageType.Text);
+                                Client.JsonUpload("Default", Client.Clients);
+                            }
+                            else MessageBox.Show("Вы не выбрали кому отправлять файл");
+                            break;
+
+
+                        case "video":
+                            if (UserNames.SelectedIndex != -1)
+                            {
+                                await Client.bot.SendVideoAsync(IdBox.Text, new InputOnlineFile(file));
+                                Client.MessageAdd("0", int.Parse(IdBox.Text), $"Вы отправили видео в формате .{extension}", false,
+                                    null, Telegram.Bot.Types.Enums.MessageType.Text);
+                                Client.JsonUpload("Default", Client.Clients);
+                            }
+                            else  MessageBox.Show("Вы не выбрали кому отправлять файл");
+                            break;
+
+
+                        case "audio":
+                            if (UserNames.SelectedIndex != -1)
+                            {
+                                await Client.bot.SendAudioAsync(IdBox.Text, new InputOnlineFile(file));
+                                Client.MessageAdd("0", int.Parse(IdBox.Text), $"Вы отправили аудио в формате .{extension}", false,
+                                    null, Telegram.Bot.Types.Enums.MessageType.Text);
+                                Client.JsonUpload("Default", Client.Clients);
+                            }
+                            else
+                                MessageBox.Show("Вы не выбрали кому отправлять файл");
+                            break;
+
+
+                        case "doc":
+                            if (UserNames.SelectedIndex != -1)
+                            {
+                                await Client.bot.SendDocumentAsync(IdBox.Text, new InputOnlineFile(file, DownloadTextField.Text));
+                                Client.MessageAdd("0", int.Parse(IdBox.Text), $"Вы отправили документ в формате .{extension}", false,
+                                    null, Telegram.Bot.Types.Enums.MessageType.Text);
+                                Client.JsonUpload("Default", Client.Clients);
+                            }
+                            else
+                                MessageBox.Show("Вы не выбрали кому отправлять файл");
+                            break;
+                        default:
+                            break;
+                    }
+                    file.Close();
                 }
                 else
                 {

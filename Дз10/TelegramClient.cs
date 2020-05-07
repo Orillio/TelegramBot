@@ -242,5 +242,39 @@ namespace Дз10
             }
             catch { }
         }
+        /// <summary>
+        /// Определение расширения файла
+        /// </summary>
+        /// <param name="filename">Имя файла</param>
+        /// <param name="extension">Расширение</param>
+        public void ExtensionCheck(string filename, out string extension, out string extensionType)
+        {
+            var temp = filename.Split('.');
+            extension = temp[temp.Length - 1];
+            switch (extension)
+            {
+                case "jpg":
+                    extensionType = "photo";
+                    break;
+                case "png":
+                    extensionType = "photo";
+                    break;
+                case "jpeg":
+                    extensionType = "photo";
+                    break;
+                case "gif":
+                    extensionType = "photo";
+                    break;
+                case "mp3":
+                    extensionType = "audio";
+                    break;
+                case "mp4":
+                    extensionType = "video";
+                    break;
+                default:
+                    extensionType = "doc";
+                    break;
+            }
+        }
     }
 }
