@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Дз10", "Дз10\Дз10.csproj", "{B749F3A5-5883-4CF5-A1FD-0FA294ECE0B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramClient", "Дз10\TelegramClient.csproj", "{B749F3A5-5883-4CF5-A1FD-0FA294ECE0B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

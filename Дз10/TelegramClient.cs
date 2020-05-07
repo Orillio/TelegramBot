@@ -30,8 +30,9 @@ namespace Дз10
         /// </summary>
         /// <param name="window">Экземпляр основного окна</param>
         /// <param name="token">Токен</param>
-        public TelegramClient(MainWindow window, string token = "1086634674:AAGoyEE9i28XJDBow_lU4JMgamknvGpVbNc")
+        public TelegramClient(MainWindow window)
         {
+            string token = File.ReadAllText("token.txt");
             this.window = window; // присваиваем локальному полю TelegramClient.window ссылку на экземпляр класса MainWindow
             bot = new TelegramBotClient(token); // Инициализация бота
             bot.OnMessage += MessageListener; // Когда приходит сообщение, выполняется обработчик сообщения
